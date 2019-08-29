@@ -28,3 +28,8 @@ steps:
     command: test
     projects: '**/*Tests/*.csproj'
     arguments: '--configuration Release --filter TestCategory=Unit'
+- task: NuGetCommand@2
+  inputs:
+    command: 'pack'
+    packagesToPack: '**/RedisGraphDotNet.Client.csproj'
+    versioningScheme: 'off'
