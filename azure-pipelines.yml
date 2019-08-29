@@ -30,6 +30,7 @@ steps:
     arguments: '--configuration Release --filter TestCategory=Unit'
 
 - task: DotNetCoreCLI@2
+  displayName: Pack
   inputs:
     command: 'pack'
     packagesToPack: '**/RedisGraphDotNet.Client.csproj'
