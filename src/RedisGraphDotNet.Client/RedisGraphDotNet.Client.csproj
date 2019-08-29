@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>RedisGraph.Client</RootNamespace>
+    <PackageId>RedisGraphDotNet.Client</PackageId>
+    <PackageDescription>A dotnet core client library for the RedisGraph module.</PackageDescription>
+    <Authors>Stefan Gawrys</Authors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="stackexchange.redis" Version="2.0.601" />
+  </ItemGroup>
+
+</Project>
