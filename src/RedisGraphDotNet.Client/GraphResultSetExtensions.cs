@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using StackExchange.Redis;
 
-public static class GraphResultSetExtensions
+internal static class GraphResultSetExtensions
 {
     private const int NodeRecordResultLength = 3;
     private const int RelationRecordResultLength = 5;
     private const int QueryResultRecordLength = 3;
 
-    public static ResultSet AsResultSet(this RedisResult result)
+    internal static ResultSet AsResultSet(this RedisResult result)
     {
         if (result == null)
         {
