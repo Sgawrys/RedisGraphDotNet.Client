@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using StackExchange.Redis;
 
-namespace RedisGraph.Client
+namespace RedisGraphDotNet.Client
 {
     public class RedisGraphClient : IRedisGraphClient
     {

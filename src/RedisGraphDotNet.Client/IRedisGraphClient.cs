@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace RedisGraph.Client
+namespace RedisGraphDotNet.Client
 {
     public interface IRedisGraphClient
     {
