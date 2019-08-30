@@ -127,7 +127,7 @@ namespace RedisGraphDotNet.Client.Tests
         [Fact]
         public async Task QueryReturnsMultipleNodesAndScalarValues()
         {
-            var createResult = await redisGraphClient.Query(TestGraphName, "CREATE (:node1 { prop1: 1 }),(:node1 { prop1: 1})");
+            var createResult = await redisGraphClient.Query(TestGraphName, "CREATE (:node1 { prop1: 1}),(:node1 { prop1: 1})");
 
             var queryResult = await redisGraphClient.Query(TestGraphName, "MATCH (a:node1) WHERE a.prop1 = 1 RETURN a.prop1,a");
 
@@ -142,7 +142,7 @@ namespace RedisGraphDotNet.Client.Tests
         [Fact]
         public async Task QueryReturnsRelation()
         {
-            var createResult = await redisGraphClient.Query(TestGraphName, "CREATE (:node1)-[:parent]->(:node2)");
+            var createResult = await redisGraphClient.Query(TestGraphName, "CREATE (:node1)-[:parent { prop1: 1}]->(:node2)");
 
             var queryResult = await redisGraphClient.Query(TestGraphName, "MATCH (:node1)-[a:parent]->(:node2) RETURN a");
 
@@ -234,6 +234,19 @@ namespace RedisGraphDotNet.Client.Tests
             Assert.Equal(1, createQuery.Metrics.PropertiesSet);
             Assert.NotNull(deleteQuery);
             Assert.Equal(1, deleteQuery.Metrics.NodesDeleted);
+        }
+
+        [Fact]
+        public async Task RemovePropertyFromNode()
+        {
+            var createQuery = await redisGraphClient.Query(TestGraphName, "CREATE (:node1 { prop1: 1})");
+            var deleteQuery = await redisGraphClient.Query(TestGraphName, "MATCH (a:node1) SET a.prop1 = NULL");
+
+            Assert.NotNull(createQuery);
+            Assert.Equal(1, createQuery.Metrics.NodesCreated);
+            Assert.Equal(1, createQuery.Metrics.PropertiesSet);
+            Assert.NotNull(deleteQuery);
+            Assert.Equal(1, deleteQuery.Metrics.PropertiesSet);
         }
 
         public void Dispose()
