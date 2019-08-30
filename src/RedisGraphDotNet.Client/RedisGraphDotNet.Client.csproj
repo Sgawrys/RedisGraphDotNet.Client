@@ -6,6 +6,7 @@
     <PackageId>RedisGraphDotNet.Client</PackageId>
     <PackageDescription>A dotnet core client library for the RedisGraph module.</PackageDescription>
     <Authors>Stefan Gawrys</Authors>
+    <Version>0.1.0-alpha</Version>
   </PropertyGroup>
 
   <ItemGroup>
