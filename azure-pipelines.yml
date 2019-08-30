@@ -5,6 +5,7 @@
 
 trigger:
 - master
+- release/*
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -35,3 +36,12 @@ steps:
     command: 'pack'
     packagesToPack: '**/RedisGraphDotNet.Client.csproj'
     versioningScheme: 'off'
+
+- task: NuGetCommand@2
+  displayName: 'Publish to Nuget.org'
+  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/'))
+  inputs:
+    command: 'push'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+    nuGetFeedType: 'external'
+    publishFeedCredentials: 'RedisGraphDotNetNuGetConnection'
