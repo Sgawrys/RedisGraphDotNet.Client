@@ -144,13 +144,21 @@ internal static class GraphResultSetExtensions
 
         var identifier = ((RedisResult[])redisResults[0])[1];
         var labels = (string[])((RedisResult[])redisResults[1])[1];
-        var propertyKeys = (string[])((RedisResult[])redisResults[2])[0];
 
         var node = new Node((int)identifier)
         {
             Labels = labels.ToList(),
-            Properties = new Dictionary<string, string>(),
+            Properties = new Dictionary<string, RedisValue>(),
         };
+
+        var properties = (RedisResult[])((RedisResult[])redisResults[2])[1];
+
+        foreach (var property in properties)
+        {
+            var keyValuePair = (RedisResult[]) property;
+
+            node.Properties.Add((string) keyValuePair[0], (RedisValue) keyValuePair[1]);
+        }
 
         return node;
     }
@@ -172,13 +180,24 @@ internal static class GraphResultSetExtensions
         var sourceNodeIdentifier = (int) ((RedisResult[]) redisResults[2])[1];
         var destinationNodeIdentifier = (int) ((RedisResult[]) redisResults[3])[1];
 
-        return new Relation((int) identifier)
+        var relation = new Relation((int) identifier)
         {
             Type = relationshipType,
             SourceNodeId = sourceNodeIdentifier,
             DestinationNodeId = destinationNodeIdentifier,
-            Properties = new Dictionary<string, string>(),
+            Properties = new Dictionary<string, RedisValue>(),
         };
+
+        var properties = (RedisResult[])((RedisResult[])redisResults[4])[1];
+
+        foreach (var property in properties)
+        {
+            var keyValuePair = (RedisResult[]) property;
+
+            relation.Properties.Add((string) keyValuePair[0], (RedisValue) keyValuePair[1]);
+        }
+
+        return relation;
     }
 
     private static double ParseCommandExecutionTime(string executionTimeString)
