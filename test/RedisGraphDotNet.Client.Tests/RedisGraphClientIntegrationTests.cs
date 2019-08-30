@@ -188,6 +188,20 @@ namespace RedisGraphDotNet.Client.Tests
             Assert.Single(callProcedure.Results);
         }
 
+        [Fact]
+        public async Task CreateRelationWithProperties()
+        {
+            var createQuery = await redisGraphClient.Query(TestGraphName, "CREATE (:node1)-[:parent {prop1: 1}]->(:node2)");
+            var relationshipQuery = await redisGraphClient.Query(TestGraphName, "MATCH (:node1)-[a:parent]->(:node2) RETURN a");
+
+            Assert.NotNull(createQuery);
+            Assert.Equal(1, createQuery.Metrics.PropertiesSet);
+            Assert.Equal(2, createQuery.Metrics.NodesCreated);
+            Assert.Equal(1, createQuery.Metrics.RelationshipsCreated);
+            Assert.NotNull(relationshipQuery);
+            Assert.Single(relationshipQuery.Results);
+        }
+
         public void Dispose()
         {
             redisGraphClient.DeleteGraph(TestGraphName);
