@@ -176,6 +176,18 @@ namespace RedisGraphDotNet.Client.Tests
             Assert.NotNull(createSecondNode);
         }
 
+        [Fact]
+        public async Task CallLabelsProcedure()
+        {
+            var createFirstNode = await redisGraphClient.Query(TestGraphName, "CREATE (:node1)");
+            var callProcedure = await redisGraphClient.Query(TestGraphName, "CALL db.labels()");
+
+            Assert.NotNull(createFirstNode);
+            Assert.NotNull(callProcedure);
+            Assert.Equal(1, createFirstNode.Metrics.NodesCreated);
+            Assert.Single(callProcedure.Results);
+        }
+
         public void Dispose()
         {
             redisGraphClient.DeleteGraph(TestGraphName);

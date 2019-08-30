@@ -49,6 +49,13 @@ internal static class GraphResultSetExtensions
                                 Type = ScalarResultType.Integer
                             });
                             continue;
+                        case ResultType.BulkString:
+                            resultSet.Results[headerMetadata[j]].Add(new ScalarResult<string>()
+                            {
+                                Value = (string) payload[j],
+                                Type = ScalarResultType.String
+                            });
+                            break;
                         default:
                             break;
                     }
