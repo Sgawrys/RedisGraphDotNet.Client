@@ -77,3 +77,11 @@ redisGraphClient.Query("myTestGraphDatabase", "MATCH (a)->[:parent]->(b) RETURN 
 ```csharp
 redisGraphClient.DeleteGraph("myTestGraphDatabase");
 ```
+
+## Running Tests
+
+Run tests with the following command:
+
+`dotnet test`
+
+The tests currently expect Redis to be running locally on 6379.
