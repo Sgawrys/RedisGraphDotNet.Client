@@ -202,6 +202,40 @@ namespace RedisGraphDotNet.Client.Tests
             Assert.Single(relationshipQuery.Results);
         }
 
+        [Fact]
+        public async Task CreateAndDeleteNode()
+        {
+            var createQuery = await redisGraphClient.Query(TestGraphName, "CREATE (:node1)");
+            var deleteQuery = await redisGraphClient.Query(TestGraphName, "MATCH (a:node1) DELETE a");
+
+            Assert.NotNull(deleteQuery);
+            Assert.Equal(1, deleteQuery.Metrics.NodesDeleted);
+        }
+
+        [Fact]
+        public async Task TestRelationshipDeletion()
+        {
+            var createQuery = await redisGraphClient.Query(TestGraphName, "CREATE (:node1)-[:parent]->(:node2)");
+            var deleteQuery = await redisGraphClient.Query(TestGraphName, "MATCH (a:node1)-[b:parent]->() DELETE b");
+
+            Assert.NotNull(deleteQuery);
+            Assert.Equal(1, deleteQuery.Metrics.RelationshipsDeleted);
+            Assert.Equal(0, deleteQuery.Metrics.NodesDeleted);
+        }
+
+        [Fact]
+        public async Task DeleteNodeWithProperties()
+        {
+            var createQuery = await redisGraphClient.Query(TestGraphName, "CREATE (:node1 { prop1: 1 })");
+            var deleteQuery = await redisGraphClient.Query(TestGraphName, "MATCH (a:node1) DELETE a");
+
+            Assert.NotNull(createQuery);
+            Assert.Equal(1, createQuery.Metrics.NodesCreated);
+            Assert.Equal(1, createQuery.Metrics.PropertiesSet);
+            Assert.NotNull(deleteQuery);
+            Assert.Equal(1, deleteQuery.Metrics.NodesDeleted);
+        }
+
         public void Dispose()
         {
             redisGraphClient.DeleteGraph(TestGraphName);

@@ -2,7 +2,11 @@ public class QueryExecutionMetrics
 {
     public int NodesCreated { get; set; }
 
+    public int NodesDeleted { get; set; }
+
     public int RelationshipsCreated { get; set; }
+
+    public int RelationshipsDeleted { get; set; }
 
     public int LabelsCreated { get; set; }
 

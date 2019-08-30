@@ -104,6 +104,9 @@ internal static class GraphResultSetExtensions
                 case "nodes created":
                     executionMetrics.NodesCreated = int.Parse(kvp[1].Trim());
                     break;
+                case "nodes deleted":
+                    executionMetrics.NodesDeleted = int.Parse(kvp[1].Trim());
+                    break;
                 case "properties set":
                     executionMetrics.PropertiesSet = int.Parse(kvp[1].Trim());
                     break;
@@ -112,6 +115,9 @@ internal static class GraphResultSetExtensions
                     break;
                 case "relationships created":
                     executionMetrics.RelationshipsCreated = int.Parse(kvp[1].Trim());
+                    break;
+                case "relationships deleted":
+                    executionMetrics.RelationshipsDeleted = int.Parse(kvp[1].Trim());
                     break;
                 case "labels added":
                     executionMetrics.LabelsCreated = int.Parse(kvp[1].Trim());
