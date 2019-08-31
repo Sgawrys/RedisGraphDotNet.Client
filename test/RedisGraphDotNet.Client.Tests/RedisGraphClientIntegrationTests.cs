@@ -266,6 +266,19 @@ namespace RedisGraphDotNet.Client.Tests
             Assert.Equal(4, node.Properties.Count);
         }
 
+        [Fact]
+        public async Task CreateNodeWithDifferentPropertyTypesAndReturnScalars()
+        {
+            var createQuery = await redisGraphClient.Query(TestGraphName, "CREATE (:node1 { prop1: 1, prop2: '2', prop3: 3.1, prop4: false })");
+            var retrieveQuery = await redisGraphClient.Query(TestGraphName, "MATCH (a:node1) RETURN a.prop1, a.prop2, a.prop3, a.prop4");
+
+            Assert.NotNull(createQuery);
+            Assert.Equal(1, createQuery.Metrics.NodesCreated);
+            Assert.Equal(4, createQuery.Metrics.PropertiesSet);
+            Assert.NotNull(retrieveQuery);
+            Assert.Equal(4, retrieveQuery.Results.Count);
+        }
+
         public void Dispose()
         {
             redisGraphClient.DeleteGraph(TestGraphName);
