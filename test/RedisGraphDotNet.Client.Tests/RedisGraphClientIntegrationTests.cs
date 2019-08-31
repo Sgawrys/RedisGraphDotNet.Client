@@ -13,7 +13,7 @@ namespace RedisGraphDotNet.Client.Tests
 
         public RedisGraphClientIntegrationTests()
         {
-            redisGraphClient = new RedisGraphClient("localhost", 6379, TestGraphName);
+            redisGraphClient = new RedisGraphClient("localhost", 6379);
         }
 
         [Fact]

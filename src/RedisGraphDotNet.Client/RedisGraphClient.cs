@@ -10,14 +10,8 @@ namespace RedisGraphDotNet.Client
         private const string RedisGraphExplainCommand = "GRAPH.EXPLAIN";
 
         private readonly ConnectionMultiplexer multiplexer;
-        private readonly string graphName;
 
         public RedisGraphClient(string address, int port) : this(ConnectionMultiplexer.Connect($"{address}:{port}")) { }
-
-        public RedisGraphClient(string address, int port, string graphName) : this(address, port)
-        {
-            this.graphName = graphName;
-        }
 
         public RedisGraphClient(ConnectionMultiplexer multiplexer)
         {
