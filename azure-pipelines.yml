@@ -7,8 +7,24 @@ trigger:
 - master
 - release/*
 
+schedules:
+- cron: "0 0 * * *"
+  displayName: Daily midnight build
+  branches:
+    include:
+    - master
+    - releases/*
+
+resources:
+  containers:
+  - container: redisgraph
+    image: redislabs/redisgraph:edge
+
 pool:
   vmImage: 'ubuntu-latest'
+
+services:
+  redisgraph: redisgraph
 
 # do this before all your .NET Core tasks
 steps:
@@ -28,7 +44,7 @@ steps:
   inputs:
     command: test
     projects: '**/*Tests/*.csproj'
-    arguments: '--configuration Release --filter TestCategory=Unit'
+    arguments: '--configuration Release'
 
 - task: DotNetCoreCLI@2
   displayName: Pack
