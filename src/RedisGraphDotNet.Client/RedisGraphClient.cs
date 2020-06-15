@@ -18,14 +18,16 @@ namespace RedisGraphDotNet.Client
             this.multiplexer = multiplexer;
         }
 
-        public Task<ResultSet> Query(string graphName, string query)
+        public async Task<ResultSet> Query(string graphName, string query)
         {
-            return Task.FromResult(ExecuteQuery(RedisGraphQueryCommand, graphName, query).AsResultSet());
+            var redisResult = await ExecuteQueryAsync(RedisGraphQueryCommand, graphName, query);
+            return redisResult.AsResultSet();
         }
 
-        public Task<string> Explain(string graphName, string query)
+        public async Task<string> Explain(string graphName, string query)
         {
-            return Task.FromResult((string) ExecuteQuery(RedisGraphExplainCommand, graphName, query));
+            var redisResult = await ExecuteQueryAsync(RedisGraphExplainCommand, graphName, query);
+            return (string) redisResult;
         }
 
         public Task<bool> DeleteGraph(string graphName) {
@@ -34,12 +36,12 @@ namespace RedisGraphDotNet.Client
             return Task.FromResult(true);
         }
 
-        private RedisResult ExecuteQuery(string commandName, string graphName, string query)
+        private Task<RedisResult> ExecuteQueryAsync(string commandName, string graphName, string query)
         {
             try
             {
                 var db = multiplexer.GetDatabase();
-                return db.Execute(commandName, graphName, query);
+                return db.ExecuteAsync(commandName, graphName, query);
             }
             catch (RedisServerException ex) when (ex.Message.Contains(RedisGraphErrorMessages.GraphDatabaseNotExists))
             {
