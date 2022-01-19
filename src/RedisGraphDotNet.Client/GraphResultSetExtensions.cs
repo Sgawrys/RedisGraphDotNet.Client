@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using StackExchange.Redis;
 
@@ -202,6 +203,6 @@ internal static class GraphResultSetExtensions
 
     private static double ParseCommandExecutionTime(string executionTimeString)
     {
-        return double.Parse(executionTimeString.Split(new string[] { "milliseconds"}, StringSplitOptions.RemoveEmptyEntries)[0]);
+        return double.Parse(executionTimeString.Split(new string[] { "milliseconds"}, StringSplitOptions.RemoveEmptyEntries)[0], CultureInfo.InvariantCulture);
     }
 }
